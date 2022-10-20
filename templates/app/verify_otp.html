@@ -1,0 +1,24 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %} verify otp {% endblock title%}
+{% block main-content %}
+
+<div class="col-sm-4 text-center align-self-center offset-4">
+<fieldset class="form-group mt-5" >
+    <form action="" method="post"  class="shadow p-5">
+        {% csrf_token %}
+        {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{{message}}</strong> 
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        
+        
+        {% endfor %}
+        {{form.as_p}}
+        <input type="submit" value="Verify" class="btn btn-success">
+    </form>
+</fieldset>
+</div>
+{% endblock main-content%}

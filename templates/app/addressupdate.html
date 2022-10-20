@@ -1,0 +1,26 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% if request.user.id == cid %}
+{% block title %}Buy Now{% endblock title %}
+{% block main-content %}
+<div class="container my-5">
+ <div class="row">
+ <h3>Hii {{user.first_name|capfirst}}</h3>
+  
+   </ul>
+  </div>
+  <div class="col-sm-9 offset-sm-1">
+   <div class="row">
+      <h3>Edit Address</h3>
+      <form action="" method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    
+ </div>
+</div>
+{% endblock main-content %}
+{%else %}
+<h1>Bhosdike mana kiya na teko</h1>
+{% endif%}

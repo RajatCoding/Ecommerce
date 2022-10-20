@@ -1,0 +1,25 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Buy Now{% endblock title %}
+{% block main-content %}
+<div class="container my-5">
+ <div class="row">
+ <h3>Hii {{user.first_name|capfirst}}</h3>
+  <div class="col-sm-2 border-end">
+   <ul class="list-unstyled">
+    <li class="d-grid"><a href="{% url 'profile' user.id %}" class="btn">Edit Profile</a></li>
+    <li class="d-grid"><a href="{% url 'address' user.id %}" class="btn {{active}}">Add Other Address</a></li>
+    <li class="d-grid"><a href="{% url 'manageaddress' user.id %}" class="btn">Manage Address</a></li>
+   </ul>
+  </div>
+  <div class="col-sm-9 offset-sm-1">
+   <div class="row">
+      <form action="" method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    
+ </div>
+</div>
+{% endblock main-content %}
