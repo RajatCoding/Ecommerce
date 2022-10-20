@@ -1,3 +1,3 @@
 # Ecommerse
 This is a Dynamic DJango Ecommerse Website 
-![alt tex](https://github.com/RajatCoding/Ecommerce/Screenshots/j1.jpg)
+![alt tex](https://github.com/RajatCoding/Ecommerce/blob/master/Screenshots/b2.png)
