@@ -66,7 +66,7 @@ urlpatterns = [
 #User Releted Authentication Urls
     path('registration/', views.customerregistration, name='customerregistration'),
 
-    path('verify_otp/', views.verify_otp, name="otp"),
+    path('verify_otp/<int:pk>', views.verify_otp, name="otp"),
 
     path('login/', LoginView.as_view(template_name = 'app/login.html',authentication_form=LoginForm),name='login'),
 
