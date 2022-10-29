@@ -21,9 +21,9 @@
       {% elif item %}
       <div class="card mb-2">
         <div class="card-body">
-          <h5>{{item.product.title}}</h5>
-          <p>Quantity: {{item.quantity}}</p>
-          <p class="fw-bold">Price: {{item.product.discounted_price}}</p>
+          <h5>{{item.title}}</h5>
+          <p>Quantity: 1</p>
+          <p class="fw-bold">Price: {{item.discounted_price}}</p>
         </div>
       </div>
       {%endif%}
@@ -37,7 +37,7 @@
     <h4>Select Shipping Address</h4>
     <hr>
     <form action="/paymentdone">
-      {% for ad in address %}
+      {% for ad in address reversed %}
       <div class="card">
         <div class="card-body">
           <h5>Name: {{ad.name}}</h5>
@@ -48,13 +48,30 @@
           <p>Pin Code: {{ad.zipcode}}</p>
         </div>
       </div>
-     
         <div class="form-check mt-2 mb-5">
-          <input class="form-check-input" type="radio" name ="custid" value="{{ad.id}}">
+          <input class="form-check-input" type="radio" name ="custid" value="{{ad.id}}" checked="checked">
           <label class="form-check-label fw-bold" for="">
             Address: {{forloop.counter}} </label>
         </div>
         {% endfor %}
+
+        {% for ad in main_add  %}
+        <div class="card">
+          <div class="card-body">
+            <h5>Name: {{ad.name}}</h5>
+            <p>Mobile: {{ad.mobile_no}}</p>
+            <p>State: {{ad.state}}</p>
+            <p>City: {{ad.city}}</p>
+            <p>Address: {{ad.locality}}</p>
+            <p>Pin Code: {{ad.zipcode}}</p>
+          </div>
+        </div>
+          <div class="form-check mt-2 mb-5">
+            <input class="form-check-input" type="radio" name ="custid" value="{{ad.id}}" checked="checked">
+            <label class="form-check-label fw-bold" for="">
+              Main Address </label>
+          </div>
+          {% endfor %}
         <div class="text-end">
           <button type="submit" class="btn btn-warning mt-3 px-5 fw-bold">Continue</button>
         </div>

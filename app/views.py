@@ -26,7 +26,21 @@ def home(request):
 def mobile(request):
     mobile = Product.objects.filter(category="mobile")
     return render(request, "app/mobile.html", {"mobile":mobile})
-# ------------------------------------------------------------------------------
+
+def laptop(request):
+    laptops = Product.objects.filter(category="laptop")
+    return render(request, "app/laptop.html", {"laptops":laptops})
+
+def topwear(request):
+    topwears = Product.objects.filter(category="t-shirts")
+    return render(request, "app/topwear.html", {"topwears":topwears})
+
+def bottomwear(request):
+    bottomwears = Product.objects.filter(category="jeans")
+    return render(request, "app/bottomwear.html", {"bottomwears":bottomwears})
+
+
+#-----------------------------------------------------------------------------
 
 
 # Registration of User & Profile Update
@@ -38,9 +52,6 @@ def send_otp(phone_no):
     otp = random.randint(1000, 9999)
 #  url = f"https://2factor.in/API/V1/{api_key}/SMS/{phone_no}/{otp}"
     return otp
-
-
-
 
 def customerregistration(request):
     # Registration form
@@ -63,7 +74,6 @@ def customerregistration(request):
         return render(request, 'app/customerregistration.html', {"forms": forma})
     else:
         return redirect("/")
-
 
 def verify_otp(request,pk):
     # verify otp and save user to database
@@ -90,8 +100,6 @@ def verify_otp(request,pk):
     else:
             return redirect(customerregistration)
 
-   
-
 @method_decorator(login_required(login_url='login'), name="dispatch")
 class ProfileUpdate(UpdateView):
     # User can edit his current profile
@@ -111,8 +119,6 @@ class ProfileUpdate(UpdateView):
 # ------------------------------------------------------------------------------
 
 # Addresses of User.
-
-
 
 def add_address(request, pk):
     # Add address
@@ -134,20 +140,20 @@ def add_address(request, pk):
         messages.warning(request, "Don't try to login in others account")
         return redirect('/login')
 
-
-
 def manage_address(request, pk):
     # Show and option for delete or edit created address
     if not request.user.is_anonymous :
         if request.user.id == pk:
-            add = Customer.objects.filter(user_id=pk)
-            return render(request, "app/addressmanage.html", {'active': 'btn-primary', "add": add})
+            add = Customer.objects.filter(Q(user_id=pk) & Q(user_address = False))
+            print(add)
+            main_add = Customer.objects.filter(Q(user_id=pk) & Q(user_address = True))
+        
+            return render(request, "app/addressmanage.html", {'active': 'btn-primary', "add": add, "main_add":main_add})
         else:
             return redirect('/')
     else:
             messages.warning(request, "Don't try to login in others account")
             return redirect('/login')
-
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class AddressUpdate(UpdateView):
@@ -166,7 +172,6 @@ class AddressUpdate(UpdateView):
         else:
             return super().dispatch(request, *args, *kwargs)
 
-
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class AddressDelete(DeleteView):
     # Delte Address
@@ -182,9 +187,7 @@ class AddressDelete(DeleteView):
         else:
             return super().dispatch(request, *args, *kwargs)
 
-
 # ------------------------------------------------------------------------------
-
 
 # Product
 
@@ -197,7 +200,6 @@ def product_detail(request, pk):
         return render(request, 'app/productdetail.html', {"product": product, 'items': item_in_cart})
     else:
         return render(request, 'app/productdetail.html', {"product": product})
-
 
 def add_to_cart(request, pk):
     if not request.user.is_anonymous :
@@ -213,7 +215,6 @@ def add_to_cart(request, pk):
     else:
             messages.warning(request, "Don't try to login in others account")
             return redirect('/login')
-
 
 @login_required(login_url='login')
 def showcart(request):
@@ -235,7 +236,9 @@ def showcart(request):
     else:
         return render(request, "app/emptycart.html")
 
+
 # Cart Quantity
+
 
 def plus(request):
     if not request.user.is_anonymous :
@@ -337,8 +340,9 @@ def checkout(request):
         for p in cart_product:
             amount += p.quantity*p.product.discounted_price
         total_amount = amount+shipping_charges
-    address = Customer.objects.filter(user=user)
-    return render(request, 'app/checkout.html', {"carts": carts, "totalamount": total_amount, "address": address})
+    address = Customer.objects.filter(Q(user = user) & Q(user_address = False))
+    main_add = Customer.objects.filter(Q(user = user) & Q(user_address = True))
+    return render(request, 'app/checkout.html', {"carts": carts, "totalamount": total_amount, "address": address, "main_add":main_add})
 
 def paymentdone(request):
     if not request.user.is_anonymous :
@@ -362,7 +366,12 @@ def paymentdone(request):
         return redirect('/login')
 
 def buy_now(request, pk):
-    pass
+    user = request.user
+    item = Product.objects.get(pk=pk)
+    total_amount = 70+ item.discounted_price
+    address = Customer.objects.filter(Q(user = user) & Q(user_address = False))
+    main_add = Customer.objects.filter(Q(user = user) & Q(user_address = True))
+    return render(request, 'app/checkout.html', {"item": item, "total_amount": total_amount, "address": address, "main_add":main_add})
 
 @login_required(login_url='login')
 def orders(request):

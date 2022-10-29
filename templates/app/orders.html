@@ -6,12 +6,12 @@
  <div class="row">
  <h3>Welcome {{user.first_name|capfirst}}</h3>
   <div class="col-sm-2 border-end">
-   <ul class="list-unstyled">
+   <!-- <ul class="list-unstyled">
     <li class="d-grid"><a href="{% url 'orders' %}" class="btn btn-primary">Orders</a></li>
-   </ul>
+   </ul> -->
 </div>
   <div class="col-sm-9 offset-sm-1">
-      {% for op in order_placed %}
+      {% for op in order_placed reversed %}
    <div class="row">
       
       <div class="col-sm-12">

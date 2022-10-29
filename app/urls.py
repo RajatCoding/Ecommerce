@@ -14,6 +14,9 @@ urlpatterns = [
 
 #Product releted url
     path('mobile/', views.mobile, name='mobile'),
+    path('laptop/', views.laptop, name='laptop'),
+    path('topwear/', views.topwear, name='topwear'),
+    path('bottomwear/', views.bottomwear, name='bottomwear'),
 
     path('product-detail/<int:pk>', views.product_detail, name='product-detail'),
 

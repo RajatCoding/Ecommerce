@@ -18,4 +18,5 @@ def cartt(request):
     if cart_obj:
         return( {'cat':cart_obj})
     else:  
+        
       return {'cat':cart_obj }

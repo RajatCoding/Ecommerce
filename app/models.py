@@ -1,4 +1,5 @@
 
+from email.policy import default
 from django.db import models
 # Create your models here.
 from django.contrib.auth.models import AbstractUser
@@ -79,8 +80,9 @@ class Customer(models.Model):
     mobile_no = mobile_no = models.CharField(null= True,blank=False,max_length=10,unique=True, validators=[mobile_validate])
     locality = models.CharField(max_length=200)
     city = models.CharField(max_length=50)
-    zipcode = models.IntegerField()
+    zipcode = models.IntegerField(null= True,blank=False,max_length=5)
     state = models.CharField(choices=STATE_CHOICES, max_length=50)
+    user_address = models.BooleanField(default=False)
 
 PRODUCT_CHOICES = (
     ("jeans","Jeans" ),

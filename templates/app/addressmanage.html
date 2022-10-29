@@ -22,11 +22,30 @@
 
     <div class="col-sm-9 offset-sm-1">
       <div class="row">
-        {% for ad in add%}
-        <div class="col-sm-6">
-          
+      
+    
+        
+          {% for ad in main_add%}
+          <div class="col-sm-6">
           <div class="card">
             <div class="card-body">
+              <h3> Main Address </h3>
+              <p>Name: {{ad.name}}</p>
+              <p>Mobile: {{ad.mobile_no}}</p>
+              <p>Address: {{ad.locality}}</p>
+              <p>State: {{ad.state}}</p>
+              <p>City: {{ad.city}}</p>
+              <p>Address: {{ad.locality}}</p>
+              <p>Pin Code: {{ad.zipcode}}</p>
+            </div>
+          </div>
+        </div>
+          {% endfor %}
+  
+          {% for ad in add%}
+          <div class="col-sm-6">
+          <div class="card mb-4">
+            <div class="card-body ">
               <h3>Address {{forloop.counter}}</h3>
               <p>Name: {{ad.name}}</p>
               <p>Mobile: {{ad.mobile_no}}</p>
@@ -43,6 +62,7 @@
         
 
         {% endfor %} 
+      
       </div>
     </div>
   </div>
