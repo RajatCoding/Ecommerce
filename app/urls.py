@@ -77,5 +77,9 @@ urlpatterns = [
     
     path('profile/<int:pk>', views.ProfileUpdate.as_view(), name='profile'),
 
-#------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------
+
+    path('api/register/', views.RegisterUserAPIView.as_view(), name= 'register'),
+    path('api/profile/<int:pk>', views.profile_edit, name= 'register')
+
 ]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

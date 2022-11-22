@@ -30,11 +30,12 @@ $('.plus-cart').click(function () {
     console.log("hello")
     $.ajax(
         {
-            type: "GET",
+            type: 'GET',
             url: "/pluscart",
             
             data: {
-                prod_id: id
+                prod_id:id
+
             },
             success: function (data) {
                 console.log(data);
@@ -48,7 +49,8 @@ $('.plus-cart').click(function () {
 $('.minus-cart').click(function () {
     console.log("pyar")
     var id = $(this).attr("pid").toString();
-    var eml = this.parentNode.children[2];
+    var eml = $(this).next()[0]
+    console.log(eml)
     $.ajax(
         {
             type: "GET",
@@ -58,7 +60,8 @@ $('.minus-cart').click(function () {
             },
             success: function (data) {
                 // console.log(data)
-                eml.innerText = data.quantity;
+                eml.innerText = data.quantity
+               
                 document.getElementById("amount").innerText = data.amount.toFixed(2);
                 document.getElementById("totalamount").innerText = data.totalamount.toFixed(2);
             }

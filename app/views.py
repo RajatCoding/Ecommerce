@@ -11,6 +11,9 @@ from django.db.models import Q
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+import requests
+from api.serializers import UserSerializer,ProfileUpdateSeializer
+
 User = get_user_model()
 
 votp = None
@@ -48,9 +51,21 @@ def bottomwear(request):
 def send_otp(phone_no):
     # Otp send to user who want to register
     # need to add throttling
+    # url = "https://www.fast2sms.com/dev/bulkV2"
+    otp = random.randint(1000, 9999)
+#     querystring = {"authorization":"w5FEkpLNnWScI9CmJ3ZsVXDHberaOgqYtUix76u8KAMzo2QBfd6bNrnQg3ViSLFIeuka5yZYf8TH4CxA","variables_values":otp,"route":"q","numbers":phone_no}
+
+#     headers = {
+#     'cache-control': "no-cache"
+# }
+
+#     response = requests.request("GET", url, headers=headers, params=querystring)
+
+    # print(response.text)
     api_key = '82bd6b1b-125c-11ed-9c12-0200cd936042'
     otp = random.randint(1000, 9999)
-#  url = f"https://2factor.in/API/V1/{api_key}/SMS/{phone_no}/{otp}"
+    url = f"https://2factor.in/API/V1/{api_key}/SMS/{phone_no}/{otp}"
+    response = requests.get(url)
     return otp
 
 def customerregistration(request):
@@ -242,9 +257,11 @@ def showcart(request):
 
 def plus(request):
     if not request.user.is_anonymous :
-            if request.method == 'GET':
+            if request.method == "GET":
                 try:
+                   
                     prod_id = request.GET['prod_id']
+                    print(prod_id)
                     c = Cart.objects.get(Q(product=prod_id) & Q(user=request.user))
                     c.quantity += 1
                     c.save()
@@ -258,10 +275,10 @@ def plus(request):
                     amount += p.quantity*p.product.discounted_price
             
                 data = {
-                    'quantity': c.quantity,
-                    'amount': amount,
-                    'totalamount': amount+shipping_amount
-                }
+                'quantity': c.quantity,
+                'amount': amount,
+                'totalamount': amount+shipping_amount
+                         }
                 return JsonResponse(data)
             
 
@@ -364,7 +381,8 @@ def paymentdone(request):
     else:
         messages.warning(request, "Don't try to login in others account")
         return redirect('/login')
-
+        
+@login_required(login_url='login')
 def buy_now(request, pk):
     user = request.user
     item = Product.objects.get(pk=pk)
@@ -378,3 +396,49 @@ def orders(request):
     user = request.user
     order_placed = Product_Status.objects.filter(user=user)
     return render(request, 'app/orders.html', {"order_placed": order_placed})
+
+import io
+from rest_framework.parsers import JSONParser
+from rest_framework.renderers import JSONRenderer
+from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+from rest_framework.decorators import api_view
+
+class RegisterUserAPIView(generics.CreateAPIView):
+  permission_classes = (AllowAny, )
+  serializer_class = UserSerializer
+
+
+@api_view(['GET',"PUT"])
+def profile_edit(request,pk):
+    if request.method == "GET":
+        profile = User.objects.get(id=pk)
+        print(pk)
+        print(profile)
+
+        serialize = ProfileUpdateSeializer( profile)
+        return Response({"data": serialize.data})
+       
+        
+    if request.method == "PUT":
+        profile = User.objects.get(id=pk)
+        print(pk)
+        print(profile)
+
+        serialize = ProfileUpdateSeializer(profile, data = request.data, partial=True)
+        if serialize.is_valid():
+            serialize.save()
+            return Response({"data": serialize.data})
+        else:
+            return Response({'msg':"data not updated"})
+        
+
+
+
+            
+
+            
+       
+        
+
