@@ -82,13 +82,23 @@ WSGI_APPLICATION = 'shoppinglyx.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     },
+    
+# }
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+"default": {
+"ENGINE": "django.db.backends.postgresql",
+"NAME": "mydatabase",
+"USER": "myuser",
+"PASSWORD": "mypassword",
+"HOST": "db",
+"PORT": "5432", # default PostgreSQL port
 }
-
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -124,7 +134,7 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
+# https://docs.djangoprojegit@github.com:RajatCoding/Ecommerce.gitct.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
 
